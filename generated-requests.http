@@ -1,0 +1,112 @@
+###登录接口测试，参数是json格式
+POST http://localhost:8080/blog-server-2/admin/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456"
+}
+
+###根据id查管理员数据接口测试，参数在路径中
+GET http://localhost:8080/blog-server-2/admin/1
+
+###获取博客分页数据接口测试，参数在路径?后面
+GET http://localhost:8080/blog-server-2/blog?pageSize=2&pageNum=1
+
+###获取博客分页数据接口测试，参数中有类型id的情况
+GET http://localhost:8080/blog-server-2/blog?pageSize=2&pageNum=1&categoryId=1
+
+###获取博客分页数据接口测试，参数中有博客名称的情况
+GET http://localhost:8080/blog-server-2/blog?pageSize=2&pageNum=1&title=深夜
+
+###获取博客分页数据接口测试，参数中有类型id和博客名称的情况
+GET http://localhost:8080/blog-server-2/blog?pageSize=2&pageNum=1&categoryId=2&title=深夜
+
+###根据id查询博客
+GET http://localhost:8080/blog-server-2/blog/1
+
+###查询博客top 2
+GET http://localhost:8080/blog-server-2/blog/hot/2
+
+###查询所有分类
+GET http://localhost:8080/blog-server-2/category/all
+
+###分页查询分类
+GET http://localhost:8080/blog-server-2/category?pageSize=2&pageNum=1
+
+###分页查询分类，参数中有分类名称的情况
+GET http://localhost:8080/blog-server-2/category?pageSize=2&pageNum=1&categoryName=家
+
+###根据id查询分类
+GET http://localhost:8080/blog-server-2/category/1
+
+###新增博客
+POST http://localhost:8080/blog-server-2/blog
+Content-Type: application/json
+
+{
+  "title": "Spring Boot入门教程",
+  "category": {
+    "id": 5
+  },
+  "summary": "本文详细介绍了Spring Boot的基本使用方法和核心特性",
+  "photo": "http://localhost:8080/uploads/2026/05/22/abc123.jpg",
+  "content": "<p>Spring Boot是一个快速开发框架...</p><h2>核心特性</h2><p>自动配置、起步依赖...</p>"
+}
+
+###更新博客
+PUT http://localhost:8080/blog-server-2/blog
+Content-Type: application/json
+
+{
+  "id": "6",
+  "title": "mysql",
+  "category": {
+    "id": 5
+  },
+  "summary": "学习数据库基础",
+  "photo": "http://localhost:8080/uploads/2026/05/22/abc123.jpg",
+  "content": "<p>Spring Boot是一个快速开发框架...</p><h2>核心特性</h2><p>自动配置、起步依赖...</p>"
+}
+
+###删除博客
+DELETE http://localhost:8080/blog-server-2/blog/6
+
+###新增类型
+POST http://localhost:8080/blog-server-2/category
+Content-Type: application/json
+
+{
+  "category_name": "娱乐八卦",
+  "remark": "关注最新娱乐八卦，纯属娱乐"
+}
+
+###更新类型
+PUT http://localhost:8080/blog-server-2/category
+Content-Type: application/json
+
+{
+  "id": "4",
+  "category_name": "娱乐热点",
+  "remark": "关注最新娱乐热点，纯属娱乐"
+}
+
+###删除类型
+DELETE http://localhost:8080/blog-server-2/category/4
+
+###更新管理员信息
+###更新类型
+PUT http://localhost:8080/blog-server-2/admin
+Content-Type: application/json
+
+{
+  "id": "1",
+  "username": "admin123",
+  "password": "123456",
+  "nickname": "老刘",
+  "sign": "不爱学习，我是被逼的"
+}
+
+
+
+

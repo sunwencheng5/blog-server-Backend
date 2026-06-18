@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwzy.blog.mapper.BlogMapper">
+    <resultMap id="BlogMap" type="Blog">
+        <id property="id" column="id"></id>
+        <result property="title" column="title"></result>
+        <result property="summary" column="summary"></result>
+        <result property="photo" column="photo"></result>
+        <result property="content" column="content"></result>
+        <result property="click_num" column="click_num"></result>
+        <result property="create_time" column="create_time"></result>
+        <result property="update_time" column="update_time"></result>
+        <association property="category" columnPrefix="cat_" resultMap="com.lwzy.blog.mapper.CategoryMapper.CatMap">
+        </association>
+    </resultMap>
+    <select id="selectByPage" resultMap="BlogMap">
+        select b.* ,
+               c.id cat_id,
+               c.category_name cat_category_name,
+               c.remark cat_remark,
+               c.create_time cat_create_time,
+               c.update_time cat_update_time
+        from t_blog b,t_category c
+        where b.category_id=c.id
+          <!--如果分类id不为空，则拼接上按照分类id查询子句-->
+        <if test="categoryId!=null and categoryId!=''">
+            and b.category_id=#{categoryId}
+        </if>
+        <!--如果文章标题不为空，则拼接上按照文章标题查询子句-->
+        <if test="title!=null and title!=''">
+            and b.title like concat('%',#{title},'%')
+        </if>
+        order by b.create_time desc
+        limit #{start},#{limit}
+    </select>
+
+    <!--查询总数-->
+    <select id="selectTotal" resultType="int">
+        select count(*)
+        from t_blog b,t_category c
+        where b.category_id=c.id
+        <!--如果分类id不为空，则拼接上按照分类id查询子句-->
+        <if test="categoryId!=null and categoryId!=''">
+            and b.category_id=#{categoryId}
+        </if>
+        <!--如果文章标题不为空，则拼接上按照文章标题查询子句-->
+        <if test="title!=null and title!=''">
+            and b.title like concat('%',#{title},'%')
+        </if>
+    </select>
+    <select id="selectById" resultMap="BlogMap">
+        select b.*,
+               c.id cat_id,
+               c.category_name cat_category_name,
+               c.remark cat_remark,
+               c.create_time cat_create_time,
+               c.update_time cat_update_time
+        from t_blog b,t_category c
+        where b.category_id=c.id
+          and b.id=#{id}
+    </select>
+
+    <!--按点击量降序排，取前num个-->
+    <select id="selectTop" resultMap="BlogMap">
+        select b.*,
+               c.id cat_id,
+               c.category_name cat_category_name,
+               c.remark cat_remark,
+               c.create_time cat_create_time,
+               c.update_time cat_update_time
+        from t_blog b,t_category c
+        where b.category_id=c.id
+        order by b.click_num desc
+            limit #{num}
+    </select>
+
+    <insert id="add">
+        insert into t_blog(title,category_id,summary,photo,content,click_num,create_time,update_time)
+        values(#{title},#{category.id},#{summary},#{photo},#{content},0,now(),now())
+    </insert>
+    <update id="update">
+        update t_blog
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="category.id != null and category.id!=0">
+                category_id = #{category.id},
+            </if>
+            <if test="summary != null and summary != ''">
+                summary = #{summary},
+            </if>
+            <if test="photo != null and photo != ''">
+                photo = #{photo},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="click_num != null and click_num!=0 ">
+                click_num = #{click_num},
+            </if>
+            <if test="create_time != null and create_time!='' ">
+                create_time = #{create_time},
+            </if>
+            <!-- 更新时间总是更新 -->
+            update_time = now(),
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from t_blog
+        where id=#{id}
+    </delete>
+</mapper>

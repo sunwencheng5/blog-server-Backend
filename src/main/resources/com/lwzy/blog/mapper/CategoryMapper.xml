@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwzy.blog.mapper.CategoryMapper">
+   <resultMap id="CatMap" type="Category">
+       <id property="id" column="id"></id>
+       <result property="category_name" column="category_name"></result>
+       <result property="remark" column="remark"></result>
+       <result property="create_time" column="create_time"></result>
+       <result property="update_time" column="update_time"></result>
+   </resultMap>
+
+    <select id="selectAll" resultMap="CatMap">
+        select *
+        from t_category
+    </select>
+
+    <select id="selectByPage" resultMap="CatMap">
+        select *
+        from t_category
+        <where>
+            <!--如果参数中有类型名称，则拼接按类型名查询条件-->
+            <if test="categoryName!=null and categoryName!=''">
+                and category_name like concat('%',#{categoryName},'%')
+            </if>
+        </where>
+        order by create_time desc
+        limit #{start},#{limit}
+    </select>
+
+    <select id="selectTotal" resultType="int">
+        select count(*)
+        from t_category
+        <where>
+            <!--如果参数中有类型名称，则拼接按类型名查询条件-->
+            <if test="categoryName!=null and categoryName!=''">
+                and category_name like concat('%',#{categoryName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectById" resultMap="CatMap">
+        select *
+        from t_category
+        where id=#{id}
+    </select>
+
+    <insert id="add">
+        insert into t_category(category_name,remark,create_time,update_time)
+        values(#{category_name},#{remark},now(),now())
+    </insert>
+    <update id="update">
+        update t_category
+        <set>
+            <if test="category_name != null and category_name != ''">
+                category_name = #{category_name},
+            </if>
+            <if test="remark!= null and remark!=''">
+                remark = #{remark},
+            </if>
+            <!-- 更新时间总是更新 -->
+            update_time = now(),
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from t_category
+        where id=#{id}
+    </delete>
+</mapper>
