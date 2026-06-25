@@ -12,7 +12,7 @@ MySQL
 
 Maven
 
-快速开始
+# 快速开始
 1. 克隆项目
 bash
 
