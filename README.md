@@ -20,7 +20,7 @@ git clone https://github.com/sunwencheng5/blog-server-Backend.git
 
 cd blog-server-Backend
 
-3. 导入数据库
+2. 导入数据库
 
 bash
 # 创建数据库（名称请参考 db_blog_manage.sql 中的配置）
