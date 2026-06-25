@@ -12,6 +12,45 @@ MySQL
 
 Maven
 
+#项目结构
+blog-server-Backend/
+
+├── sql/
+
+│   └── db_blog_manage.sql        # 数据库建表脚本
+
+├── src/
+
+│   ├── main/
+
+│   │   ├── java/com/lwzy/blog/
+
+│   │   │   ├── bean/             # 实体类
+
+│   │   │   ├── common/           # 公共工具类
+
+│   │   │   ├── controller/       # 控制器（API 接口）
+
+│   │   │   ├── mapper/           # 数据访问层
+
+│   │   │   ├── service/          # 业务逻辑层
+
+│   │   │   └── BlogServer2Application.java  # 启动类
+
+│   │   └── resources/
+
+│   │       ├── application.yml          # 配置文件
+
+│   │       ├── static/                  # 静态资源
+
+│   │       └── com/lwzy/blog/mapper/    # MyBatis XML 映射
+
+│   └── test/                     # 单元测试
+
+├── .gitignore
+
+└── generated-requests.http       # API 测试请求示例
+
 快速开始
 1. 克隆项目
 bash
